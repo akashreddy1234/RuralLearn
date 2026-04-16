@@ -2,7 +2,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 
 // Initialize the API only if the key is present
 const genAI = process.env.GEMINI_API_KEY ? new GoogleGenerativeAI(process.env.GEMINI_API_KEY) : null;
-const aiModelName = 'gemini-2.5-flash';
+const aiModelName = 'gemini-2.5-flash-lite';
 
 const extractVideoId = (url) => {
   if (!url) return null;
