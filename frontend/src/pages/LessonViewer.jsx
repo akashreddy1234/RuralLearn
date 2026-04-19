@@ -123,7 +123,7 @@ const LessonViewer = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {lesson.documentUrl && (
                   <a 
-                    href={`http://localhost:5000${lesson.documentUrl}`} 
+                    href={`${import.meta.env.VITE_API_URL}${lesson.documentUrl}`} 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="flex items-center p-4 border border-slate-200 rounded-xl hover:bg-blue-50 hover:border-blue-200 transition-colors group"
