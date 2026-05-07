@@ -1,3 +1,7 @@
+const dns = require('dns');
+// Force IPv4 globally before any other module loads to prevent Render ENETUNREACH issues
+dns.setDefaultResultOrder('ipv4first');
+
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
