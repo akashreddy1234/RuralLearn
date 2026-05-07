@@ -1,32 +1,35 @@
 const nodemailer = require("nodemailer");
+const dns = require("dns");
+
+// Force IPv4 resolution to prevent ENETUNREACH errors on cloud platforms like Render
+dns.setDefaultResultOrder("ipv4first");
 
 const sendEmail = async (options) => {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-    tls: {
-      rejectUnauthorized: false,
-    },
-  });
+  try {
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
 
-  await transporter.verify();
-  console.log("SMTP Ready");
+    const mailOptions = {
+      from: `RuralLearn <${process.env.EMAIL_USER}>`,
+      to: options.email,
+      subject: options.subject,
+      text: options.message,
+    };
 
-  const mailOptions = {
-    from: `RuralLearn <${process.env.EMAIL_USER}>`,
-    to: options.email,
-    subject: options.subject,
-    text: options.message,
-  };
+    const info = await transporter.sendMail(mailOptions);
 
-  const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent:", info.response);
 
-  console.log("Email sent:", info.response);
+    return info;
+  } catch (error) {
+    console.error("EMAIL ERROR:", error);
+    throw error;
+  }
 };
 
 module.exports = sendEmail;
